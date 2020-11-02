@@ -36,10 +36,26 @@ class PlaceFinder{
         }else{
             this.map = new Map(coordinates);
         }
-
-        this.shareBtn.disabled = false;
-        const shareLinkElement = document.getElementById('share-link');
-        shareLinkElement.value =`${location.origin}/my-place?address=${encodeURI(address)}&lat=${coordinates.lat}&lng=${coordinates.lng}`
+        fetch('http://localhost/3000/add-location',{
+            method:'post',
+            body:JSON.stringify({
+                address:address,
+                lat:coordinates.lat,
+                lng:coordinates.lng
+            }),
+            headers:{
+                'Content-Type':'application/json'
+            } 
+        }).then(response =>{
+            return response.json();
+        }).then(data =>{
+            const locationId = data.locid;
+            this.shareBtn.disabled = false;
+            const shareLinkElement = document.getElementById('share-link');
+            shareLinkElement.value =`${location.origin}/my-place?location=${locationId}`
+            //address=${encodeURI(address)}&lat=${coordinates.lat}&lng=${coordinates.lng}`
+        });
+        
     }
 
   locateUserHandler(){
