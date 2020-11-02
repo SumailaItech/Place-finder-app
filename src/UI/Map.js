@@ -12,7 +12,10 @@ export class Map{
         }
 
        const map = new google.maps.Map(document.getElementById('map'),{
-            center: coordinates,
+            center: {
+                lat:coordinates.lat,
+                lng:coordinates.lng
+            },
             zoom:16
         });
 
